@@ -11,9 +11,10 @@ const ArtworkCard = ({ artwork, onViewDetails }) => {
 
   return (
     <div
-      className="bg-white rounded-xl shadow-md overflow-hidden"
+      className="bg-white rounded-xl shadow-md overflow-hidden card-hover cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => onViewDetails(artwork)}
     >
       <div className="relative aspect-[4/3]">
         <img
