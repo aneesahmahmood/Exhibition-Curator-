@@ -1,11 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
+import { useArtStore } from "./store/useArtStore";
 import Filters from "./components/Filters";
+import ArtworkGrid from "./components/ArtworkGrid";
+import Header from "./components/Header"
+
 
 function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages] = useState(1); 
+  
+  const loadAllArtworks = useArtStore((state) => state.loadAllArtworks);
+  const initFavourites = useArtStore((state) => state.initFavourites);
+
+  useEffect(() => {
+    initFavourites();
+  }, [initFavourites]);
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        await loadAllArtworks('', 9);
+      } catch (error) {
+        console.error("Error loading artworks:", error);
+      }
+    };
+
+    fetchAll();
+  }, [currentPage, loadAllArtworks]);
 
   const handleNext = () => {
     if (currentPage < totalPages) {
@@ -18,6 +40,7 @@ function App() {
       setCurrentPage((prev) => prev - 1);
     }
   };
+
   return (
     <Router>
       <div className="min-h-screen">
@@ -32,14 +55,14 @@ function App() {
                 Explore artworks from multiple renowned collections worldwide
               </p>
             </div>
-
+            
             <Routes>
               <Route
                 path="/"
                 element={
                   <>
                     <Filters />
-                  
+                    <ArtworkGrid />
                     <div className="flex justify-center space-x-4 pt-6 sm:pt-8">
                       <button
                         className="btn-secondary"
@@ -59,6 +82,7 @@ function App() {
                   </>
                 }
               />
+              
             </Routes>
           </div>
         </main>
@@ -68,3 +92,4 @@ function App() {
 }
 
 export default App;
+
