@@ -4,6 +4,7 @@ import { useArtStore } from "./store/useArtStore";
 import Filters from "./components/Filters";
 import ArtworkGrid from "./components/ArtworkGrid";
 import Header from "./components/Header"
+import Favourites from "./components/Favourites";
 
 
 function App() {
@@ -82,7 +83,7 @@ function App() {
                   </>
                 }
               />
-              
+              <Route path="/favourites" element={<Favourites />} />
             </Routes>
           </div>
         </main>
