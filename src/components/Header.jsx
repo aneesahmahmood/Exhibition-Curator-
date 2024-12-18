@@ -4,7 +4,7 @@ import { Search, Palette, BookMarked, Menu, X } from "lucide-react";
 import { useArtStore } from "../store/useArtStore";
 import { Link } from "react-router-dom";
 
-const Header = ({ onCreateExhibition }) => {
+const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const searchArtworks = useArtStore((state) => state.searchArtworks);
@@ -17,9 +17,14 @@ const Header = ({ onCreateExhibition }) => {
   const [searchValue, setSearchValue] = useState("");
 
   const handleSearchChange = (e) => {
-    const value = e.target.value;
+    const value = e.target.value.trim();
     setSearchValue(value);
-    searchArtworks(value);
+
+    if (value) {
+      searchArtworks(value);
+    } else {
+      useArtStore.getState().resetFilters();
+    }
   };
 
   return (
@@ -28,6 +33,7 @@ const Header = ({ onCreateExhibition }) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <Palette className="h-8 w-8 text-indigo-600" />
+
             <Link
               to="/"
               className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
@@ -100,12 +106,6 @@ const Header = ({ onCreateExhibition }) => {
                 <BookMarked className="h-5 w-5" />
                 <span>My Favourites ({favouriteArtworks.length})</span>
               </Link>
-              <button
-                className="btn-primary w-full"
-                onClick={onCreateExhibition}
-              >
-                Create Exhibition
-              </button>
             </nav>
           </div>
         )}

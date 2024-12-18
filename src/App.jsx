@@ -3,9 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useArtStore } from "./store/useArtStore";
 import Filters from "./components/Filters";
 import ArtworkGrid from "./components/ArtworkGrid";
-import Header from "./components/Header"
+import Header from "./components/Header";
 import Favourites from "./components/Favourites";
-
 
 function App() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,7 +20,7 @@ function App() {
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        await loadAllArtworks('', 9);
+        await loadAllArtworks("", 9); 
       } catch (error) {
         console.error("Error loading artworks:", error);
       }
@@ -93,4 +92,3 @@ function App() {
 }
 
 export default App;
-

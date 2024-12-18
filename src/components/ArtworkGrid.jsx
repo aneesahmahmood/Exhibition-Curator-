@@ -1,17 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ArtworkCard from "./ArtwordCard";
 import ArtworkModal from "./ArtworkModal";
 import { useArtStore } from "../store/useArtStore";
 
 const ArtworkGrid = () => {
-  const [selectedArtwork, setSelectedArtwork] = useState(null);
   const artworks = useArtStore((state) => state.filteredArtworks);
-
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(artworks.length === 0);
-  }, [artworks]);
+  const loading = useArtStore((state) => state.loading);
+  const [selectedArtwork, setSelectedArtwork] = useState(null);
 
   if (loading) {
     return (

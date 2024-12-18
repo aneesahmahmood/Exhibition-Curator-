@@ -53,12 +53,14 @@ const ArtworkModal = ({ artwork, onClose }) => {
               <h3 className="text-lg font-semibold text-gray-900">Category</h3>
               <p className="text-gray-600">{artwork.category}</p>
             </div>
-
             <div>
               <h3 className="text-lg font-semibold text-gray-900">
                 Description
               </h3>
-              <p className="text-gray-600">{artwork.description}</p>
+              <p
+                className="text-gray-600"
+                dangerouslySetInnerHTML={{ __html: artwork.description }}
+              />
             </div>
           </div>
         </div>
