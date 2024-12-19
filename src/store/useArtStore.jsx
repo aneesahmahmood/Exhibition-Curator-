@@ -16,8 +16,7 @@ export const useArtStore = create((set) => ({
   categories: [],
 
   initFavourites: () => {
-    const storedFavourites =
-      JSON.parse(localStorage.getItem("favourites")) || [];
+    const storedFavourites = JSON.parse(localStorage.getItem("favourites")) || [];
     set({ favourites: storedFavourites });
   },
 
@@ -33,10 +32,10 @@ export const useArtStore = create((set) => ({
     });
   },
 
-  loadAllArtworks: async (query = "", limit = 9) => {
+  loadAllArtworks: async (query = "", limit = 9, page = 1) => {
     try {
       const [chicagoResponse, metResponse] = await Promise.all([
-        fetchArtworks(1, limit, query),
+        fetchArtworks(page, limit, query),
         fetchMetArtworks(query),
       ]);
 
@@ -52,9 +51,16 @@ export const useArtStore = create((set) => ({
         museums: uniqueMuseums,
         categories: uniqueCategories,
       });
+
+      return {
+        pagination: chicagoResponse.pagination,
+      };
     } catch (error) {
       console.error("Failed to fetch artworks:", error);
       set({ artworks: [], filteredArtworks: [], museums: [], categories: [] });
+      return {
+        pagination: { current_page: 1, total_pages: 1 },
+      };
     }
   },
 
