@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { fetchArtworks, fetchMetArtworks } from "../data/api";
 
-export const useArtStore = create((set) => ({
+export const useArtStore = create((set, get) => ({
   artworks: [],
   filteredArtworks: [],
   favourites: [],
@@ -16,7 +16,8 @@ export const useArtStore = create((set) => ({
   categories: [],
 
   initFavourites: () => {
-    const storedFavourites = JSON.parse(localStorage.getItem("favourites")) || [];
+    const storedFavourites =
+      JSON.parse(localStorage.getItem("favourites")) || [];
     set({ favourites: storedFavourites });
   },
 
@@ -117,5 +118,50 @@ export const useArtStore = create((set) => ({
       },
       filteredArtworks: state.artworks,
     }));
+  },
+
+  sortArtworks: () => {
+    const { filteredArtworks, filters } = get();
+    let sortedArtworks = [...filteredArtworks]; // Shallow copy
+
+    if (filters.sortBy) {
+      sortedArtworks.sort((a, b) => {
+        if (filters.sortBy === "title") {
+          return a.title.localeCompare(b.title);
+        } else if (filters.sortBy === "artist") {
+          return a.artist.localeCompare(b.artist);
+        } else if (filters.sortBy === "year") {
+          return (
+            parseInt(a.year) - parseInt(b.year) || a.year.localeCompare(b.year)
+          );
+        }
+        return 0;
+      });
+    }
+
+    set({ filteredArtworks: sortedArtworks });
+  },
+
+  setFilters: (newFilters) => {
+    set((state) => {
+      const updatedFilters = { ...state.filters, ...newFilters };
+
+      // Apply filters
+      let filteredResults = state.artworks.filter((artwork) => {
+        const matchesMuseum =
+          !updatedFilters.museum || artwork.museum === updatedFilters.museum;
+        const matchesCategory =
+          !updatedFilters.category ||
+          artwork.category === updatedFilters.category;
+
+        return matchesMuseum && matchesCategory;
+      });
+
+      return {
+        filters: updatedFilters,
+        filteredArtworks: filteredResults,
+      };
+    });
+    get().sortArtworks();
   },
 }));

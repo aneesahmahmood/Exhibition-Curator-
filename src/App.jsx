@@ -20,7 +20,7 @@ function App() {
   useEffect(() => {
     const fetchAll = async () => {
       const result = await loadAllArtworks("", 9, currentPage);
-      if (result.pagination) {
+      if (result?.pagination) {
         setTotalPages(result.pagination.total_pages);
       }
     };
@@ -54,7 +54,6 @@ function App() {
                 Explore artworks from multiple renowned collections worldwide
               </p>
             </div>
-
             <Routes>
               <Route
                 path="/"
