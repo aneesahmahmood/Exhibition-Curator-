@@ -2,6 +2,9 @@
 
 ArtExplorer is a React-based web application that allows users to discover and explore world-class artworks from renowned museums worldwide. The application fetches data from two major art collections: the Art Institute of Chicago and the Metropolitan Museum of Art. Users can search, filter, view details, and save their favorite artworks for easy access.
 
+
+The application is deployed on **Vercel** and accessible at: https://exhibition-curator-eta.vercel.app/
+
 ---
 
 ## Features
@@ -69,3 +72,12 @@ npm run build
 ```
 npm run preview
 ```
+## Improvements to Be Made
+
+### Favorites Button Behavior:
+Ensure clicking the "favourites" button does not trigger a pop-up.
+
+### Sorting Functionality:
+Update sorting logic to apply to the entire dataset, not just the items currently visible on the page.
+
+
