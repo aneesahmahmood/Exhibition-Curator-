@@ -19,7 +19,7 @@ function App() {
 
   useEffect(() => {
     const fetchAll = async () => {
-      const result = await loadAllArtworks("", 9, currentPage);
+      const result = await loadAllArtworks(9, currentPage);
       if (result?.pagination) {
         setTotalPages(result.pagination.total_pages);
       }

@@ -33,11 +33,11 @@ export const useArtStore = create((set, get) => ({
     });
   },
 
-  loadAllArtworks: async (query = "", limit = 9, page = 1) => {
+  loadAllArtworks: async (limit = 9, page = 1) => {
     try {
       const [chicagoResponse, metResponse] = await Promise.all([
-        fetchArtworks(page, limit, query),
-        fetchMetArtworks(query),
+        fetchArtworks(page || '', limit, ''),
+        fetchMetArtworks('painting'),
       ]);
 
       const combinedData = [...chicagoResponse.data, ...metResponse.data];
@@ -84,21 +84,8 @@ export const useArtStore = create((set, get) => ({
 
       const combinedData = [...chicagoResponse.data, ...metResponse.data];
 
-      const filteredResults = combinedData.filter((artwork) => {
-        const lowerQuery = query.toLowerCase();
-        const title = artwork.title ? artwork.title.toLowerCase() : "";
-        const artist = artwork.artist ? artwork.artist.toLowerCase() : "";
-        const museum = artwork.museum ? artwork.museum.toLowerCase() : "";
-
-        return (
-          title.includes(lowerQuery) ||
-          artist.includes(lowerQuery) ||
-          museum.includes(lowerQuery)
-        );
-      });
-
       set({
-        filteredArtworks: filteredResults,
+        filteredArtworks: combinedData,
         filters: { searchQuery: query },
         loading: false,
       });

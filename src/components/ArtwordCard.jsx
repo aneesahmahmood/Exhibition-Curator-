@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { Heart, Eye, Share2 } from "lucide-react";
+import { Heart, Eye } from "lucide-react";
 import { useArtStore } from "../store/useArtStore";
 
 const ArtworkCard = ({ artwork, onViewDetails }) => {
@@ -46,9 +46,6 @@ const ArtworkCard = ({ artwork, onViewDetails }) => {
                 onClick={() => onViewDetails(artwork)}
               >
                 <Eye className="h-4 sm:h-5 w-4 sm:w-5 text-gray-700" />
-              </button>
-              <button className="p-2 bg-white/90 rounded-full hover:bg-white transition-colors">
-                <Share2 className="h-4 sm:h-5 w-4 sm:w-5 text-gray-700" />
               </button>
             </div>
           </div>
