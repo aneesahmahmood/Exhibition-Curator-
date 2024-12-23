@@ -1,5 +1,5 @@
 import { useArtStore } from "../store/useArtStore";
-import ArtworkCard from "./ArtwordCard";
+import ArtworkCard from "./ArtworkCard";
 
 const Favourites = () => {
   const favourites = useArtStore((state) => state.favourites);

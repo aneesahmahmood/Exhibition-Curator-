@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ArtworkCard from "./ArtwordCard";
+import ArtworkCard from "./ArtworkCard";
 import ArtworkModal from "./ArtworkModal";
 import { useArtStore } from "../store/useArtStore";
 
