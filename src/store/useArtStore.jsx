@@ -122,7 +122,7 @@ export const useArtStore = create((set, get) => ({
 
   sortArtworks: () => {
     const { filteredArtworks, filters } = get();
-    let sortedArtworks = [...filteredArtworks]; // Shallow copy
+    let sortedArtworks = [...filteredArtworks];
 
     if (filters.sortBy) {
       sortedArtworks.sort((a, b) => {
@@ -146,7 +146,7 @@ export const useArtStore = create((set, get) => ({
     set((state) => {
       const updatedFilters = { ...state.filters, ...newFilters };
 
-      // Apply filters
+     
       let filteredResults = state.artworks.filter((artwork) => {
         const matchesMuseum =
           !updatedFilters.museum || artwork.museum === updatedFilters.museum;

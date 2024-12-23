@@ -1,30 +1,49 @@
-/* eslint-disable react/prop-types */
-import { useState } from "react";
-import { Search, Palette, BookMarked, Menu, X } from "lucide-react";
+
+import { useState, useEffect, useMemo } from "react";
+import { Search, BookMarked, Menu, X, Palette } from "lucide-react";
 import { useArtStore } from "../store/useArtStore";
 import { Link } from "react-router-dom";
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const searchArtworks = useArtStore((state) => state.searchArtworks);
+  const resetFilters = useArtStore((state) => state.resetFilters);
   const favourites = useArtStore((state) => state.favourites);
   const artworks = useArtStore((state) => state.artworks);
-  const favouriteArtworks = artworks.filter((art) =>
-    favourites.includes(art.id)
-  );
+  const favouriteArtworks = artworks.filter((art) => favourites.includes(art.id));
 
   const [searchValue, setSearchValue] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const debounce = (func, delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  };
+
+  const debouncedSearch = useMemo(
+    () =>
+      debounce((query) => {
+        if (query) {
+          searchArtworks(query);
+        } else {
+          resetFilters();
+        }
+      }, 500), 
+    [searchArtworks, resetFilters]
+  );
+
+  useEffect(() => {
+    if (searchValue.trim() !== "") {
+      debouncedSearch(searchValue.trim());
+    }
+  }, [searchValue, debouncedSearch]);
 
   const handleSearchChange = (e) => {
-    const value = e.target.value.trim();
-    setSearchValue(value);
-
-    if (value) {
-      searchArtworks(value);
-    } else {
-      useArtStore.getState().resetFilters();
-    }
+    setSearchValue(e.target.value);
   };
 
   return (
@@ -33,7 +52,6 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <Palette className="h-8 w-8 text-indigo-600" />
-
             <Link
               to="/"
               className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
@@ -71,15 +89,10 @@ const Header = () => {
             className="md:hidden p-2 text-gray-600 hover:text-indigo-600"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
 
-        {/* Mobile Search */}
         <div className="md:hidden mt-4">
           <div className="relative">
             <input
